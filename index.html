@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>よさこい 練習タイムスケジュール</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&family=Yusei+Magic&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">YOSAKOI PRACTICE PLANNER</p>
+          <h1>練習タイムスケジュール</h1>
+          <p class="hero-copy">練習を、安心してスムーズに運営するために。</p>
+        </div>
+        <div class="header-actions"><button id="home-button" class="home-button">ホーム</button><button id="save-timeline-button" class="save-button">保存</button><div class="hero-mark" aria-hidden="true">鳴</div></div>
+      </header>
+
+      <section id="home-screen" class="home-screen" hidden>
+        <div class="home-heading"><div><p class="eyebrow">SAVED SCHEDULES</p><h2>保存済みタイムスケジュール</h2></div><button id="new-timeline-button" class="primary-button">＋ 新しく作成</button></div>
+        <div id="timeline-list" class="timeline-list"></div>
+        <div id="empty-timelines" class="empty-timelines" hidden>まだ保存されたタイムスケジュールはありません。<br />「新しく作成」から始めましょう。</div>
+      </section>
+
+      <div id="editor-screen">
+
+      <section class="settings card" aria-label="練習の基本情報">
+        <label>スケジュール名<input id="schedule-title" type="text" placeholder="例：9月21日 通常練習" /></label>
+        <label>練習日<input id="practice-date" type="date" /></label>
+        <label>開始時刻<select id="start-time" aria-label="開始時刻"></select></label>
+        <label>終了時刻<select id="finish-time" aria-label="終了時刻"></select></label>
+        <label>場所<input id="place" type="text" placeholder="例：市民体育館 第2アリーナ" /></label>
+        <label>担当・連絡事項<input id="leader" type="text" placeholder="例：代表 佐藤 / 上履きを持参" /></label>
+      </section>
+
+      <section class="overview">
+        <div class="duration card"><span>メニュー数</span><strong id="item-count">0件</strong></div>
+        <button id="print-button" class="outline-button">印刷・PDF保存</button>
+      </section>
+      <p id="schedule-alert" class="schedule-alert" role="alert" hidden></p>
+
+      <section class="attendance-management card" aria-label="運営メンバー・出欠登録">
+        <div class="attendance-heading"><div><p class="eyebrow">OPERATIONS TEAM</p><h2>運営メンバー・出欠登録</h2><p>名簿は保存されます。○・△のメンバーのみ、練習メニューの担当者として選択できます。</p></div><span id="present-count" class="present-count">参加 0名</span></div>
+        <div id="member-list" class="member-list"></div>
+        <button id="add-member-button" class="add-line-button">＋ メンバーを追加</button>
+      </section>
+
+      <section class="memo card">
+        <div class="memo-heading"><span class="memo-icon">✦</span><div><h2>全体メモ</h2><p>当日の声かけや準備物を残しておけます</p></div></div>
+        <textarea id="memo" placeholder="例：19:30から隊列確認。給水は各自で準備してください。"></textarea>
+      </section>
+
+      <section class="schedule-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">TODAY'S FLOW</p><h2>練習メニュー</h2></div>
+          <button id="add-button" class="primary-button"><span>＋</span> メニューを追加</button>
+        </div>
+        <div id="schedule-list" class="schedule-list"></div>
+      </section>
+
+      <footer><span id="save-status">変更内容はこの端末に自動保存されます</span><button id="reset-button" class="text-button">初期メニューに戻す</button></footer>
+      </div>
+
+      <div id="save-modal" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="save-modal-title">
+        <section class="save-modal card"><span class="save-modal-icon">✓</span><h2 id="save-modal-title">保存しました。</h2><p>このタイムスケジュールはホーム画面からいつでも確認・編集できます。</p><div class="modal-actions"><button id="modal-home-button" class="primary-button">ホーム画面</button><button id="modal-close-button" class="outline-button">閉じる</button></div></section>
+      </div>
+    </main>
+    <template id="schedule-template">
+      <article class="schedule-item">
+        <div class="drag-handle" title="ドラッグして並べ替え" aria-label="ドラッグして並べ替え">⠿</div>
+        <div class="time"><span class="start-label"></span><span class="end-label"></span></div>
+        <div class="color-bar"></div>
+        <div class="item-content">
+          <div class="item-topline"><input class="title-input" aria-label="メニュー名" /><select class="category-select" aria-label="種別"><option value="warmup">準備</option><option value="dance">踊り</option><option value="formation">隊列</option><option value="break">休憩</option><option value="meeting">共有</option></select></div>
+          <input class="detail-input" aria-label="概要" placeholder="ポイント・対象など" />
+          <select class="assignee-input" aria-label="担当者"><option value="">担当者を選択</option></select>
+          <button class="subitem-toggle" type="button">具体メニューを編集 <span>⌄</span></button>
+          <div class="subitem-panel" hidden><div class="subitem-list"></div><button class="add-subitem-button" type="button">＋ 練習内容を追加</button></div>
+        </div>
+        <div class="minutes"><select class="duration-input" aria-label="所要時間（5分単位）"></select><span>分</span></div>
+        <div class="item-actions"><button class="move-up" title="上へ">↑</button><button class="move-down" title="下へ">↓</button><button class="delete-button" title="削除">×</button></div>
+      </article>
+    </template>
+    <template id="subitem-template"><div class="subitem-row"><span>•</span><input class="subitem-input" aria-label="具体的な練習内容" placeholder="例：8カウントずつ確認（右手の角度）" /><button class="remove-subitem" type="button" title="削除">×</button></div></template>
+    <template id="member-template"><div class="member-row"><input class="member-name" aria-label="メンバー名" placeholder="運営メンバー名" /><button class="status-toggle" type="button" aria-label="出欠状態"></button><button class="remove-small" title="名簿から削除">×</button></div></template>
+    <script src="app.js"></script>
+  </body>
+</html>
