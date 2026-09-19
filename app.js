@@ -1,12 +1,13 @@
 import { db } from './firebase-config.js';
 
 import {
+  db,
   collection,
   doc,
   getDocs,
   setDoc,
   deleteDoc
-} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
+} from './firebase-config.js';
 
 const STORAGE_KEY = 'yosakoi-practice-planner-v1';
 const SCHEDULES_KEY = 'yosakoi-saved-timelines-v1';
