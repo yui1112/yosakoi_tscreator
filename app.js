@@ -629,8 +629,8 @@ async function saveTimeline() {
       'クラウド保存に失敗しました';
 
     alert(
-      '保存に失敗しました。Firestoreのセキュリティルールを確認してください。'
-    );
+  `保存に失敗しました。\n\n原因：${error.message}`
+);
   }
 }
 
